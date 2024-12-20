@@ -1,0 +1,71 @@
+extends Node3D
+
+@export var enemy_settings:EnemySettings
+
+var attackable:bool = false
+var distance_travelled:float = 0
+
+var path_3d:Path3D
+var path_follow_3d:PathFollow3D
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	print("Ready")
+	$Path3D.curve = path_route_to_curve_3d()
+	$Path3D/PathFollow3D.progress = 0
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+
+
+func _on_spawning_state_entered() -> void:
+	print("Spawning")
+	attackable = false
+	$AnimationPlayer.play("spawn")
+	await $AnimationPlayer.animation_finished
+	$EnemyStateChart.send_event("to_traveling")
+
+
+func _on_traveling_state_entered() -> void:
+	print("Traveling")
+	attackable = true
+
+
+func _on_traveling_state_processing(delta: float) -> void:
+	distance_travelled += (delta * enemy_settings.speed)
+	var distance_travelled_on_screen:float = clamp(distance_travelled, 0, PathGenInstance.get_path_route().size()-1)
+	$Path3D/PathFollow3D.progress = distance_travelled_on_screen
+	
+	if distance_travelled > PathGenInstance.get_path_route().size()-1:
+		$EnemyStateChart.send_event("to_damaging")
+
+
+func _on_despawning_state_entered() -> void:
+	print("Despawning")
+	$AnimationPlayer.play("despawn")
+	await $AnimationPlayer.animation_finished
+	$EnemyStateChart.send_event("to_remove_enemy")
+
+func _on_remove_enemy_state_entered() -> void:
+	print("queue_free()")
+	queue_free()
+
+func _on_damaging_state_entered() -> void:
+	attackable = false
+	print("doing some damage!")
+	$EnemyStateChart.send_event("to_despawning")
+
+func _on_dying_state_entered() -> void:
+	print("Playing a dying animation!")
+	$EnemyStateChart.send_event("to_remove_enemy")
+
+func path_route_to_curve_3d() -> Curve3D:
+	var c3d:Curve3D = Curve3D.new()
+	
+	for element in PathGenInstance.get_path_route():
+		c3d.add_point(Vector3(element.x, 0.25, element.y))
+
+	return c3d

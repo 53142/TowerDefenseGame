@@ -1,0 +1,42 @@
+[gd_scene load_steps=16 format=3 uid="uid://bwh3odk8syxdv"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_gv4no"]
+[ext_resource type="PackedScene" uid="uid://cwwfcp5ydld8p" path="res://assets/tile-end.glb" id="2_odms7"]
+[ext_resource type="PackedScene" uid="uid://b5ohdl3feejxd" path="res://assets/tile-spawn-end-round.glb" id="2_vw60q"]
+[ext_resource type="PackedScene" uid="uid://bp55jdmnot17e" path="res://assets/tile-straight.glb" id="3_2nyyn"]
+[ext_resource type="PackedScene" uid="uid://djwhb5gwb7pp0" path="res://assets/tile-corner-round.glb" id="4_pa2nt"]
+[ext_resource type="PackedScene" uid="uid://5ce6ikarwyyx" path="res://assets/tile-crossing.glb" id="6_2400t"]
+[ext_resource type="PackedScene" uid="uid://dsqf52xe6efhs" path="res://assets/tile-tree.glb" id="7_jghwe"]
+[ext_resource type="PackedScene" uid="uid://crcy6rsjs73ru" path="res://assets/tile-crystal.glb" id="7_lk5h4"]
+[ext_resource type="PackedScene" uid="uid://bms14wvmeti6f" path="res://assets/enemy-ufo-a-weapon.glb" id="7_xd1qu"]
+[ext_resource type="PackedScene" uid="uid://c7vx5s03wvobq" path="res://assets/tile-rock.glb" id="8_8wmgs"]
+[ext_resource type="PackedScene" uid="uid://da2k0nhtlioq5" path="res://assets/tile.glb" id="8_ol8lx"]
+[ext_resource type="PackedScene" uid="uid://c6632xlskqav1" path="res://scenes/basic_enemy.tscn" id="12_hupvx"]
+
+[sub_resource type="Environment" id="Environment_tg6x3"]
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_nvxaq"]
+
+[sub_resource type="Compositor" id="Compositor_0dono"]
+
+[node name="main" type="Node3D"]
+script = ExtResource("1_gv4no")
+tile_start = ExtResource("2_vw60q")
+tile_end = ExtResource("2_odms7")
+tile_straight = ExtResource("3_2nyyn")
+tile_corner = ExtResource("4_pa2nt")
+tile_crossroads = ExtResource("6_2400t")
+tile_enemy = ExtResource("7_xd1qu")
+tile_empty = Array[PackedScene]([ExtResource("7_lk5h4"), ExtResource("8_8wmgs"), ExtResource("7_jghwe"), ExtResource("8_ol8lx"), ExtResource("8_ol8lx"), ExtResource("8_ol8lx"), ExtResource("8_ol8lx")])
+enemy = ExtResource("12_hupvx")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.999981, -0.000991535, -0.00613518, 0.00611007, -0.0235989, 0.999703, -0.00113602, -0.999721, -0.0235924, 6.38582, 8.57541, 4.32615)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.94033, 2.84199, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_tg6x3")
+camera_attributes = SubResource("CameraAttributesPractical_nvxaq")
+compositor = SubResource("Compositor_0dono")

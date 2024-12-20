@@ -1,0 +1,128 @@
+[gd_scene load_steps=12 format=3 uid="uid://c6632xlskqav1"]
+
+[ext_resource type="PackedScene" uid="uid://dbrxack5e8l86" path="res://assets/enemy-ufo-a.glb" id="1_x2vd5"]
+[ext_resource type="Script" path="res://scripts/basic_enemy.gd" id="1_y81hh"]
+[ext_resource type="Resource" uid="uid://bfg0wxgmaq3jp" path="res://resources/enemy_settings.res" id="2_cfiso"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="2_svinf"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="4_dy2pn"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="5_a6m1r"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="5_ftvpr"]
+
+[sub_resource type="Curve3D" id="Curve3D_1kc8j"]
+
+[sub_resource type="Animation" id="Animation_37yv6"]
+resource_name = "spawn"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Path3D/PathFollow3D/enemy-ufo-a2:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_g1hja"]
+resource_name = "despawn"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Path3D/PathFollow3D/enemy-ufo-a2:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bgo7t"]
+_data = {
+"despawn": SubResource("Animation_g1hja"),
+"spawn": SubResource("Animation_37yv6")
+}
+
+[node name="BasicEnemy" type="Node3D"]
+script = ExtResource("1_y81hh")
+enemy_settings = ExtResource("2_cfiso")
+
+[node name="EnemyStateChart" type="Node" parent="."]
+script = ExtResource("2_svinf")
+
+[node name="CompoundState" type="Node" parent="EnemyStateChart"]
+script = ExtResource("4_dy2pn")
+initial_state = NodePath("Spawning")
+
+[node name="Spawning" type="Node" parent="EnemyStateChart/CompoundState"]
+script = ExtResource("5_ftvpr")
+
+[node name="ToTraveling" type="Node" parent="EnemyStateChart/CompoundState/Spawning"]
+script = ExtResource("5_a6m1r")
+to = NodePath("../../Traveling")
+event = &"to_traveling"
+delay_in_seconds = "0.0"
+
+[node name="Traveling" type="Node" parent="EnemyStateChart/CompoundState"]
+script = ExtResource("5_ftvpr")
+
+[node name="ToDespawning" type="Node" parent="EnemyStateChart/CompoundState/Traveling"]
+script = ExtResource("5_a6m1r")
+to = NodePath("../../Despawning")
+event = &"to_despawning"
+delay_in_seconds = "0.0"
+
+[node name="ToDamaging" type="Node" parent="EnemyStateChart/CompoundState/Traveling"]
+script = ExtResource("5_a6m1r")
+to = NodePath("../../Damaging")
+event = &"to_damaging"
+delay_in_seconds = "0.0"
+
+[node name="Despawning" type="Node" parent="EnemyStateChart/CompoundState"]
+script = ExtResource("5_ftvpr")
+
+[node name="ToRemoveEnemy" type="Node" parent="EnemyStateChart/CompoundState/Despawning"]
+script = ExtResource("5_a6m1r")
+to = NodePath("../../RemoveEnemy")
+event = &"to_remove_enemy"
+delay_in_seconds = "0.0"
+
+[node name="Damaging" type="Node" parent="EnemyStateChart/CompoundState"]
+script = ExtResource("5_ftvpr")
+
+[node name="ToDespawning" type="Node" parent="EnemyStateChart/CompoundState/Damaging"]
+script = ExtResource("5_a6m1r")
+to = NodePath("../../Despawning")
+event = &"to_despawning"
+delay_in_seconds = "0.0"
+
+[node name="Dying" type="Node" parent="EnemyStateChart/CompoundState"]
+script = ExtResource("5_ftvpr")
+
+[node name="RemoveEnemy" type="Node" parent="EnemyStateChart/CompoundState"]
+script = ExtResource("5_ftvpr")
+
+[node name="Path3D" type="Path3D" parent="."]
+curve = SubResource("Curve3D_1kc8j")
+
+[node name="PathFollow3D" type="PathFollow3D" parent="Path3D"]
+loop = false
+
+[node name="enemy-ufo-a2" parent="Path3D/PathFollow3D" instance=ExtResource("1_x2vd5")]
+transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_bgo7t")
+}
+
+[connection signal="state_entered" from="EnemyStateChart/CompoundState/Spawning" to="." method="_on_spawning_state_entered"]
+[connection signal="state_entered" from="EnemyStateChart/CompoundState/Traveling" to="." method="_on_traveling_state_entered"]
+[connection signal="state_processing" from="EnemyStateChart/CompoundState/Traveling" to="." method="_on_traveling_state_processing"]
+[connection signal="state_entered" from="EnemyStateChart/CompoundState/Despawning" to="." method="_on_despawning_state_entered"]
+[connection signal="state_entered" from="EnemyStateChart/CompoundState/Damaging" to="." method="_on_damaging_state_entered"]
+[connection signal="state_entered" from="EnemyStateChart/CompoundState/Dying" to="." method="_on_dying_state_entered"]
+[connection signal="state_entered" from="EnemyStateChart/CompoundState/RemoveEnemy" to="." method="_on_remove_enemy_state_entered"]
