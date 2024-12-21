@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://c6632xlskqav1"]
+[gd_scene load_steps=14 format=3 uid="uid://c6632xlskqav1"]
 
 [ext_resource type="PackedScene" uid="uid://dbrxack5e8l86" path="res://assets/enemy-ufo-a.glb" id="1_x2vd5"]
 [ext_resource type="Script" path="res://scripts/basic_enemy.gd" id="1_y81hh"]
@@ -7,38 +7,18 @@
 [ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="4_dy2pn"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="5_a6m1r"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="5_ftvpr"]
+[ext_resource type="AudioStream" uid="uid://csft2h6kd6os0" path="res://audio/explosion.mp3" id="8_ju104"]
 
 [sub_resource type="Curve3D" id="Curve3D_1kc8j"]
 
-[sub_resource type="Animation" id="Animation_37yv6"]
-resource_name = "spawn"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Path3D/PathFollow3D/enemy-ufo-a2:scale")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(0, 0, 0), Vector3(1, 1, 1)]
-}
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_tikdk"]
+height = 0.75
 
 [sub_resource type="Animation" id="Animation_g1hja"]
 resource_name = "despawn"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Path3D/PathFollow3D/enemy-ufo-a2:scale")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(1, 1, 1), Vector3(0, 0, 0)]
-}
+
+[sub_resource type="Animation" id="Animation_37yv6"]
+resource_name = "spawn"
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_bgo7t"]
 _data = {
@@ -81,6 +61,12 @@ to = NodePath("../../Damaging")
 event = &"to_damaging"
 delay_in_seconds = "0.0"
 
+[node name="ToDying" type="Node" parent="EnemyStateChart/CompoundState/Traveling"]
+script = ExtResource("5_a6m1r")
+to = NodePath("../../Dying")
+event = &"to_dying"
+delay_in_seconds = "0.0"
+
 [node name="Despawning" type="Node" parent="EnemyStateChart/CompoundState"]
 script = ExtResource("5_ftvpr")
 
@@ -111,13 +97,25 @@ curve = SubResource("Curve3D_1kc8j")
 [node name="PathFollow3D" type="PathFollow3D" parent="Path3D"]
 loop = false
 
-[node name="enemy-ufo-a2" parent="Path3D/PathFollow3D" instance=ExtResource("1_x2vd5")]
-transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+[node name="enemy_ufo_a2" parent="Path3D/PathFollow3D" instance=ExtResource("1_x2vd5")]
+
+[node name="Area3D" type="Area3D" parent="Path3D/PathFollow3D"]
+collision_layer = 2
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Path3D/PathFollow3D/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("CylinderShape3D_tikdk")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_bgo7t")
 }
+
+[node name="ExplosionAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_ju104")
+volume_db = -25.0
+bus = &"FX"
 
 [connection signal="state_entered" from="EnemyStateChart/CompoundState/Spawning" to="." method="_on_spawning_state_entered"]
 [connection signal="state_entered" from="EnemyStateChart/CompoundState/Traveling" to="." method="_on_traveling_state_entered"]
@@ -126,3 +124,4 @@ libraries = {
 [connection signal="state_entered" from="EnemyStateChart/CompoundState/Damaging" to="." method="_on_damaging_state_entered"]
 [connection signal="state_entered" from="EnemyStateChart/CompoundState/Dying" to="." method="_on_dying_state_entered"]
 [connection signal="state_entered" from="EnemyStateChart/CompoundState/RemoveEnemy" to="." method="_on_remove_enemy_state_entered"]
+[connection signal="area_entered" from="Path3D/PathFollow3D/Area3D" to="." method="_on_area_3d_area_entered"]

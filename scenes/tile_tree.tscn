@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://wo38ehsurixc"]
+
+[ext_resource type="PackedScene" uid="uid://dsqf52xe6efhs" path="res://assets/tile-tree.glb" id="1_mhltn"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ons16"]
+
+[node name="tile_tree" type="Area3D" groups=["grid_tree"]]
+
+[node name="tile-tree2" parent="." instance=ExtResource("1_mhltn")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("BoxShape3D_ons16")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bwh3odk8syxdv"]
+[gd_scene load_steps=17 format=3 uid="uid://bwh3odk8syxdv"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_gv4no"]
 [ext_resource type="PackedScene" uid="uid://cwwfcp5ydld8p" path="res://assets/tile-end.glb" id="2_odms7"]
@@ -13,8 +13,6 @@
 [ext_resource type="PackedScene" uid="uid://1qkcr8gqbh0p" path="res://scenes/tile_empty.tscn" id="11_p88sk"]
 [ext_resource type="PackedScene" uid="uid://c6632xlskqav1" path="res://scenes/basic_enemy.tscn" id="12_hupvx"]
 [ext_resource type="PackedScene" uid="uid://c5wrhg7ydyetq" path="res://scenes/activity_button.tscn" id="13_kdlre"]
-[ext_resource type="Texture2D" uid="uid://bhd1ajyvobk4f" path="res://icon.svg" id="14_erw3p"]
-[ext_resource type="PackedScene" uid="uid://cw0wctj4kbi0h" path="res://scenes/cannon.tscn" id="15_5lh0x"]
 
 [sub_resource type="Environment" id="Environment_tg6x3"]
 background_mode = 1
@@ -38,7 +36,7 @@ tile_empty = Array[PackedScene]([ExtResource("8_bbqjv"), ExtResource("9_mbmab"),
 enemy = ExtResource("12_hupvx")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.34202, 0.939693, 0, -0.939693, 0.34202, 7.701, 8.575, 7.311)
+transform = Transform3D(0.999981, -0.000991535, -0.00613518, 0.00611007, -0.0235989, 0.999703, -0.00113602, -0.999721, -0.0235924, 6.38582, 8.57541, 4.32615)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.94033, 2.84199, 0)
@@ -50,23 +48,16 @@ compositor = SubResource("Compositor_0dono")
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
 anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -40.0
+offset_right = 20.0
 grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="CashLabel" type="Label" parent="Control"]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 49.0
-grow_horizontal = 2
-theme_override_font_sizes/font_size = 35
-text = "Cash $0"
-horizontal_alignment = 1
+grow_vertical = 0
 
 [node name="ActivityButton" parent="Control" instance=ExtResource("13_kdlre")]
 layout_mode = 1
@@ -81,5 +72,3 @@ offset_right = 48.0
 offset_bottom = 0.0
 grow_horizontal = 2
 grow_vertical = 0
-button_icon = ExtResource("14_erw3p")
-button_object = ExtResource("15_5lh0x")

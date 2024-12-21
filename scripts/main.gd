@@ -14,7 +14,7 @@ extends Node3D
 func _ready():
 	_complete_grid()
 	
-	for i in range(10):
+	for i in range(2):
 		await get_tree().create_timer(2.275).timeout
 		print("Instantiating enemy")
 		var enemy2:Node3D = enemy.instantiate()

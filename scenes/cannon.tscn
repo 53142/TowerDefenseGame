@@ -1,0 +1,74 @@
+[gd_scene load_steps=9 format=3 uid="uid://cw0wctj4kbi0h"]
+
+[ext_resource type="Script" path="res://scripts/cannon.gd" id="1_5jhhh"]
+[ext_resource type="PackedScene" uid="uid://c600hxatkv7sf" path="res://assets/weapon-cannon.glb" id="1_gmkdr"]
+[ext_resource type="PackedScene" uid="uid://btnq3q3kbs5m8" path="res://scenes/cannonball.tscn" id="2_0xx46"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="3_h3g6d"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="4_u2mul"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="5_8n7en"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="6_awljn"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_porho"]
+radius = 3.0
+
+[node name="Cannon" type="Node3D"]
+script = ExtResource("1_5jhhh")
+fire_rate_ms = 200
+projectile_type = ExtResource("2_0xx46")
+
+[node name="Cannon" type="Node3D" parent="."]
+
+[node name="weapon-cannon2" parent="Cannon" instance=ExtResource("1_gmkdr")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+
+[node name="projectile_spawn" type="Node3D" parent="Cannon"]
+
+[node name="PatrolZone" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PatrolZone"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0187927, -0.107028, 0.0768929)
+shape = SubResource("CylinderShape3D_porho")
+
+[node name="StateChart" type="Node" parent="."]
+script = ExtResource("3_h3g6d")
+
+[node name="CompoundState" type="Node" parent="StateChart"]
+script = ExtResource("4_u2mul")
+initial_state = NodePath("PatrollingState")
+
+[node name="PatrollingState" type="Node" parent="StateChart/CompoundState"]
+script = ExtResource("5_8n7en")
+
+[node name="AcquiringState" type="Node" parent="StateChart/CompoundState/PatrollingState"]
+script = ExtResource("6_awljn")
+to = NodePath("../../AcquiringState")
+event = &"to_acquiring_state"
+delay_in_seconds = "0.0"
+
+[node name="AcquiringState" type="Node" parent="StateChart/CompoundState"]
+script = ExtResource("5_8n7en")
+
+[node name="AttackingState" type="Node" parent="StateChart/CompoundState/AcquiringState"]
+script = ExtResource("6_awljn")
+to = NodePath("../../AttackingState")
+event = &"to_attacking_state"
+delay_in_seconds = "0.0"
+
+[node name="AttackingState" type="Node" parent="StateChart/CompoundState"]
+script = ExtResource("5_8n7en")
+
+[node name="PatrollingState" type="Node" parent="StateChart/CompoundState/AttackingState"]
+script = ExtResource("6_awljn")
+to = NodePath("../../PatrollingState")
+event = &"to_patrolling_state"
+delay_in_seconds = "0.0"
+
+[connection signal="area_entered" from="PatrolZone" to="." method="_on_patrol_zone_area_entered"]
+[connection signal="area_exited" from="PatrolZone" to="." method="_on_patrol_zone_area_exited"]
+[connection signal="state_processing" from="StateChart/CompoundState/PatrollingState" to="." method="_on_patrolling_state_state_processing"]
+[connection signal="state_entered" from="StateChart/CompoundState/AcquiringState" to="." method="_on_acquiring_state_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/CompoundState/AcquiringState" to="." method="_on_acquiring_state_state_physics_processing"]
+[connection signal="state_entered" from="StateChart/CompoundState/AttackingState" to="." method="_on_attacking_state_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/CompoundState/AttackingState" to="." method="_on_attacking_state_state_physics_processing"]
