@@ -10,6 +10,8 @@ extends Node3D
 
 @export var enemy:PackedScene
 
+@export var waves:Array[PackedScene]
+
 ## Assumes the path generator has finished, and adds the remaining tiles to fill in the grid.
 func _ready():
 	_complete_grid()
