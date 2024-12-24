@@ -5,24 +5,69 @@ extends Node3D
 @export var tile_straight:PackedScene
 @export var tile_corner:PackedScene
 @export var tile_crossroads:PackedScene
-@export var tile_enemy:PackedScene
+#@export var tile_enemy:PackedScene
 @export var tile_empty:Array[PackedScene]
 
-@export var enemy:PackedScene
+@export var waves: Array[Wave] = []  # List of Wave resources
+@export var enemy_spawn_position: Vector3 = Vector3(0, 0, 0)  # Default spawn position
+@export var enemy_target_position: Vector3 = Vector3(10, 0, 10)  # Path target for enemies
 
-@export var waves:Array[PackedScene]
+var current_wave_index: int = 0  # Tracks the current wave
+
+
+
 
 ## Assumes the path generator has finished, and adds the remaining tiles to fill in the grid.
 func _ready():
 	_complete_grid()
-	
-	for i in range(2):
-		await get_tree().create_timer(2.275).timeout
-		print("Instantiating enemy")
-		var enemy2:Node3D = enemy.instantiate()
-		add_child(enemy2)
-		enemy2.add_to_group("enemies")
-	
+	start_waves()
+
+	#for i in range(2):
+		#await get_tree().create_timer(2.275).timeout
+		#print("Instantiating enemy")
+		#var enemy:Node3D = enemies[0].instantiate() # Temporary
+		#add_child(enemy)
+		#enemy.add_to_group("enemies")
+
+
+# begin waves
+
+# Start the wave spawning process
+func start_waves():
+	if waves.is_empty():
+		print("No waves defined!")
+		return
+	_start_next_wave()
+
+# Start spawning the current wave
+func _start_next_wave():
+	if current_wave_index >= waves.size():
+		print("All waves complete!")
+		return
+
+	var wave = waves[current_wave_index]
+	current_wave_index += 1
+
+	print("Starting wave %d" % current_wave_index)
+	call_deferred("_spawn_wave", wave)
+
+# Spawn enemies for the given wave
+func _spawn_wave(wave: Wave):
+	await get_tree().create_timer(wave.start_delay).timeout  # Wait for the start delay
+
+	for i in range(wave.spawn_count):
+		for enemy_scene in wave.enemies:
+			var enemy_instance: Node3D = enemy_scene.instantiate()
+			add_child(enemy_instance)
+			enemy_instance.global_position = enemy_spawn_position
+			enemy_instance.add_to_group("enemies")
+
+		await get_tree().create_timer(wave.spawn_interval).timeout  # Wait between spawns
+
+	# Trigger the next wave after the current one finishes
+	_start_next_wave()
+
+# endregion wave
 
 func _complete_grid():
 	for x in range(PathGenInstance.path_config.map_length):

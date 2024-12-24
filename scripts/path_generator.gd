@@ -15,7 +15,7 @@ func _init():
 	):
 			generate_path(path_config.add_loops)
 
-## Function that does the main amount of work! Generates a random path going left to right, up or
+## Generates a random path going left to right, up or
 ## down as it goes along. If add_loops is true, a post path function takes place to see where a 
 ## loop could be placed. Note that loops can contain loops within them, making for some
 ## interesting results!

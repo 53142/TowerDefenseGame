@@ -15,12 +15,13 @@ func _on_patrol_zone_area_entered(area):
 	if current_enemy == null:
 		current_enemy = area
 	enemies_in_range.append(area)
-	#print(enemies_in_range.size())
+	print("enemies in range:", enemies_in_range)
 
 func _on_patrol_zone_area_exited(area):
 	#print(area, " exited")
 	enemies_in_range.erase(area)
 	#print(enemies_in_range.size())
+	print("enemies in range:", enemies_in_range)
 
 func set_patrolling(patrolling:bool):
 	$PatrolZone.monitoring = patrolling
@@ -52,6 +53,9 @@ func _on_patrolling_state_state_processing(_delta):
 func _remove_current_enemy():
 	print("Enemy finished")
 	enemies_in_range.erase(current_enemy)
+	current_enemy = null
+	current_enemy_class = null
+	$StateChart.send_event("to_patrolling_state")
 
 func _on_acquiring_state_state_entered():
 	current_enemy_targetted = false
@@ -64,7 +68,7 @@ func _on_acquiring_state_state_physics_processing(delta):
 		#print("Enemy disappeared while acquiring!")
 		$StateChart.send_event("to_patrolling_state")
 
-func _on_attacking_state_state_physics_processing(delta):
+func _on_attacking_state_state_physics_processing(_delta):
 	if current_enemy != null and enemies_in_range.has(current_enemy):
 		$Cannon.look_at(current_enemy.global_position)
 		_maybe_fire()
@@ -74,7 +78,6 @@ func _on_attacking_state_state_physics_processing(delta):
 
 func _maybe_fire():
 	if Time.get_ticks_msec() > (last_fire_time+fire_rate_ms):
-		#print("Fire!!")
 		var projectile:Projectile = projectile_type.instantiate()
 		projectile.starting_position = $Cannon/projectile_spawn.global_position
 		projectile.target = current_enemy

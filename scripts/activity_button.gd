@@ -20,7 +20,7 @@ var _drag_alpha:float = 0.5
 func _ready():
 	icon = button_icon
 	action_object = button_object.instantiate()
-	#action_object.set_patrolling(false)
+	action_object.set_patrolling(false)
 	add_child(action_object)
 	action_object.visible = false
 	cam = get_viewport().get_camera_3d()
@@ -54,9 +54,6 @@ func set_mesh_alpha(mesh_3d:MeshInstance3D):
 		mesh_3d.set_surface_override_material(si, mesh_3d.mesh.surface_get_material(si).duplicate(true))
 		mesh_3d.get_surface_override_material(si).transparency = 1
 		mesh_3d.get_surface_override_material(si).albedo_color.a = _drag_alpha
-#		mesh_3d.mesh.surface_set_material(si, mesh_3d.mesh.surface_get_material(si).duplicate())
-#		mesh_3d.mesh.surface_get_material(si).transparency = 1 # 1 = TRANSPARENCY_ALPHA
-#		mesh_3d.mesh.surface_get_material(si).albedo_color.a = alpha
 
 func set_child_mesh_error(n:Node):
 	for c in n.get_children():
@@ -84,7 +81,16 @@ func clear_material_override(mesh_3d:MeshInstance3D):
 
 func _on_main_mouse_hit(tile:CollisionObject3D):
 	action_object.visible = true
-	
+
+	# Safeguard against missing groups
+	var groups = tile.get_groups()
+	if groups.size() == 0:
+		print("Warning: Collider has no groups!")
+		set_child_mesh_error(action_object)
+		action_object.global_position = Vector3(tile.global_position.x, 0.2, tile.global_position.z)
+		_is_valid_location = false
+		return
+	print("tile:",tile.get_groups())
 	print("tile:",tile.get_groups()[0])
 	if tile.get_groups()[0].begins_with("grid_empty"):
 		set_child_mesh_alphas(action_object)

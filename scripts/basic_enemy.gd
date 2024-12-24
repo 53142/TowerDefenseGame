@@ -13,10 +13,15 @@ var distance_traveled:float = 0
 
 var path_3d:Path3D
 var path_follow_3d:PathFollow3D
-
+var enemy
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	# Add enemy scene
+	enemy = enemy_settings.enemy_scene.instantiate()
+	$Path3D/PathFollow3D.add_child(enemy)
+	print_tree_pretty()
+	
 	enemy_health = enemy_settings.health
 	$Path3D.curve = path_route_to_curve_3d()
 	$Path3D/PathFollow3D.progress = 0
@@ -58,11 +63,13 @@ func _on_damaging_state_entered() -> void:
 	$EnemyStateChart.send_event("to_despawning")
 
 func _on_dying_state_entered() -> void:
+	attackable = false
 	enemy_finished.emit()
 	print("Playing sound")
 	$ExplosionAudio.play()
-	$Path3D/PathFollow3D/enemy_ufo_a2.visible = false
+	enemy.visible = false
 	await $ExplosionAudio.finished
+	print("Finished playing audio")
 	$EnemyStateChart.send_event("to_remove_enemy")
 
 func path_route_to_curve_3d() -> Curve3D:
@@ -72,8 +79,6 @@ func path_route_to_curve_3d() -> Curve3D:
 		c3d.add_point(Vector3(element.x, 0.25, element.y))
 
 	return c3d
-	
-	
 
 func _on_area_3d_area_entered(area):
 	print("enemy_health:", enemy_health)

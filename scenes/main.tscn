@@ -1,20 +1,26 @@
 [gd_scene load_steps=19 format=3 uid="uid://bwh3odk8syxdv"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_gv4no"]
-[ext_resource type="PackedScene" uid="uid://cwwfcp5ydld8p" path="res://assets/tile-end.glb" id="2_odms7"]
-[ext_resource type="PackedScene" uid="uid://b5ohdl3feejxd" path="res://assets/tile-spawn-end-round.glb" id="2_vw60q"]
+[ext_resource type="PackedScene" uid="uid://bmxtidh4pjun1" path="res://scenes/tile_end.tscn" id="3_bttya"]
 [ext_resource type="PackedScene" uid="uid://c4rhrg3mvdt61" path="res://scenes/tile_straight.tscn" id="4_h6rqd"]
 [ext_resource type="PackedScene" uid="uid://cgevab8qwryt7" path="res://scenes/tile_corner.tscn" id="5_g5d30"]
 [ext_resource type="PackedScene" uid="uid://c3ww24qhvc8o6" path="res://scenes/tile_crossroads.tscn" id="6_ctsuf"]
-[ext_resource type="PackedScene" uid="uid://bms14wvmeti6f" path="res://assets/enemy-ufo-a-weapon.glb" id="7_xd1qu"]
 [ext_resource type="PackedScene" uid="uid://boe807gopjv02" path="res://scenes/tile_crystal.tscn" id="8_bbqjv"]
 [ext_resource type="PackedScene" uid="uid://b6avffm6ouqa2" path="res://scenes/tile_rock.tscn" id="9_mbmab"]
 [ext_resource type="PackedScene" uid="uid://wo38ehsurixc" path="res://scenes/tile_tree.tscn" id="10_wd3ap"]
+[ext_resource type="Script" path="res://scripts/wave.gd" id="11_ed0vu"]
 [ext_resource type="PackedScene" uid="uid://1qkcr8gqbh0p" path="res://scenes/tile_empty.tscn" id="11_p88sk"]
 [ext_resource type="PackedScene" uid="uid://c6632xlskqav1" path="res://scenes/basic_enemy.tscn" id="12_hupvx"]
 [ext_resource type="PackedScene" uid="uid://c5wrhg7ydyetq" path="res://scenes/activity_button.tscn" id="13_kdlre"]
 [ext_resource type="Texture2D" uid="uid://bhd1ajyvobk4f" path="res://icon.svg" id="14_erw3p"]
 [ext_resource type="PackedScene" uid="uid://cw0wctj4kbi0h" path="res://scenes/cannon.tscn" id="15_5lh0x"]
+
+[sub_resource type="Resource" id="Resource_rsj3x"]
+script = ExtResource("11_ed0vu")
+enemies = Array[PackedScene]([ExtResource("12_hupvx")])
+spawn_count = 5
+spawn_interval = 1.5
+start_delay = 0.0
 
 [sub_resource type="Environment" id="Environment_tg6x3"]
 background_mode = 1
@@ -28,14 +34,13 @@ adjustment_contrast = 1.25
 
 [node name="main" type="Node3D"]
 script = ExtResource("1_gv4no")
-tile_start = ExtResource("2_vw60q")
-tile_end = ExtResource("2_odms7")
+tile_start = ExtResource("3_bttya")
+tile_end = ExtResource("3_bttya")
 tile_straight = ExtResource("4_h6rqd")
 tile_corner = ExtResource("5_g5d30")
 tile_crossroads = ExtResource("6_ctsuf")
-tile_enemy = ExtResource("7_xd1qu")
-tile_empty = Array[PackedScene]([ExtResource("8_bbqjv"), ExtResource("9_mbmab"), ExtResource("10_wd3ap"), ExtResource("11_p88sk"), ExtResource("11_p88sk"), ExtResource("11_p88sk"), ExtResource("11_p88sk")])
-enemy = ExtResource("12_hupvx")
+tile_empty = Array[PackedScene]([ExtResource("9_mbmab"), ExtResource("10_wd3ap"), ExtResource("8_bbqjv"), ExtResource("11_p88sk"), ExtResource("11_p88sk"), ExtResource("11_p88sk"), ExtResource("11_p88sk")])
+waves = Array[ExtResource("11_ed0vu")]([SubResource("Resource_rsj3x")])
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.34202, 0.939693, 0, -0.939693, 0.34202, 7.701, 8.575, 7.311)
