@@ -1,4 +1,5 @@
 extends Node3D
+class_name main
 
 @export var tile_start:PackedScene
 @export var tile_end:PackedScene
@@ -11,6 +12,7 @@ extends Node3D
 @export var waves: Array[Wave] = []  # List of Wave resources
 @export var enemy_spawn_position: Vector3 = Vector3(0, 0, 0)  # Default spawn position
 @export var enemy_target_position: Vector3 = Vector3(10, 0, 10)  # Path target for enemies
+@export var lives: int = 10
 
 var current_wave_index: int = 0  # Tracks the current wave
 
@@ -109,3 +111,6 @@ func _complete_grid():
 		add_child(tile)
 		tile.global_position = Vector3(PathGenInstance.get_path_tile(i).x, 0, PathGenInstance.get_path_tile(i).y)
 		tile.global_rotation_degrees = tile_rotation
+
+func game_over() -> void:
+	pass

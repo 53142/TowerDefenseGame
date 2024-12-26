@@ -15,6 +15,8 @@ var path_3d:Path3D
 var path_follow_3d:PathFollow3D
 var enemy
 
+@onready var health_bar = $Path3D/PathFollow3D/Area3D/SubViewport/ProgressBar
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# Add enemy scene
@@ -24,6 +26,10 @@ func _ready() -> void:
 	enemy_health = enemy_settings.health
 	$Path3D.curve = path_route_to_curve_3d()
 	$Path3D/PathFollow3D.progress = 0
+	
+	# Initialize health bar & hide when at full health
+	health_bar.value = enemy_health
+	health_bar.visible = false
 
 func _on_spawning_state_entered() -> void:
 	print("Spawning")
@@ -74,7 +80,10 @@ func _on_dying_state_entered() -> void:
 	
 	print("Playing sound")
 	$ExplosionAudio.play()
+	# Hide enemy
 	enemy.visible = false
+	health_bar.visible = false
+	
 	await $ExplosionAudio.finished
 	print("Finished playing audio")
 	$EnemyStateChart.send_event("to_remove_enemy")
@@ -91,6 +100,11 @@ func _on_area_3d_area_entered(area):
 	print("enemy_health:", enemy_health)
 	if area is Projectile:
 		enemy_health -= area.damage
+		# Update health bar when enemy damaged and make sure its visible
+		health_bar.value = enemy_health
+		# Only show health bar when enemy health is greater than 0 bc sometimes enemies can be attacked at 0 health
+		if enemy_health > 0:
+			health_bar.visible = true
 
 	if enemy_health <= 0:
 		$EnemyStateChart.send_event("to_dying")
