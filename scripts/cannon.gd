@@ -49,6 +49,8 @@ func _on_patrolling_state_state_processing(_delta):
 		current_enemy_class = _find_enemy_parent(current_enemy)
 		current_enemy_class.enemy_finished.connect(_remove_current_enemy)
 		$StateChart.send_event("to_acquiring_state")
+	else:
+		current_enemy = null
 
 func _remove_current_enemy():
 	print("Enemy finished")
@@ -62,6 +64,7 @@ func _on_acquiring_state_state_entered():
 	acquire_slerp_progress = 0
 
 func _on_acquiring_state_state_physics_processing(delta):
+	# If currently targeting an enemy
 	if current_enemy != null and enemies_in_range.has(current_enemy):
 		rotate_towards_target(current_enemy, delta)
 	else:
@@ -69,7 +72,15 @@ func _on_acquiring_state_state_physics_processing(delta):
 		$StateChart.send_event("to_patrolling_state")
 
 func _on_attacking_state_state_physics_processing(_delta):
+	# If currently targeting an enemy
 	if current_enemy != null and enemies_in_range.has(current_enemy):
+		if not current_enemy_class or not current_enemy_class.attackable:
+			enemies_in_range.erase(current_enemy)
+			current_enemy = null
+			current_enemy_class = null
+			$StateChart.send_event("to_patrolling_state")
+			return
+
 		$Cannon.look_at(current_enemy.global_position)
 		_maybe_fire()
 	else:
@@ -77,6 +88,7 @@ func _on_attacking_state_state_physics_processing(_delta):
 		$StateChart.send_event("to_patrolling_state")
 
 func _maybe_fire():
+	# If cooldown over
 	if Time.get_ticks_msec() > (last_fire_time+fire_rate_ms):
 		var projectile:Projectile = projectile_type.instantiate()
 		projectile.starting_position = $Cannon/projectile_spawn.global_position
