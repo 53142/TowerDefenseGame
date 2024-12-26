@@ -11,7 +11,7 @@
 [ext_resource type="Script" path="res://scripts/wave.gd" id="11_ed0vu"]
 [ext_resource type="PackedScene" uid="uid://1qkcr8gqbh0p" path="res://scenes/tile_empty.tscn" id="11_p88sk"]
 [ext_resource type="PackedScene" uid="uid://c6632xlskqav1" path="res://scenes/basic_enemy.tscn" id="12_hupvx"]
-[ext_resource type="Script" path="res://scripts/money_label.gd" id="12_jrsxf"]
+[ext_resource type="Script" path="res://scenes/money_label.gd" id="12_jrsxf"]
 [ext_resource type="PackedScene" uid="uid://c5wrhg7ydyetq" path="res://scenes/activity_button.tscn" id="13_kdlre"]
 [ext_resource type="Texture2D" uid="uid://bhd1ajyvobk4f" path="res://icon.svg" id="14_erw3p"]
 [ext_resource type="PackedScene" uid="uid://cw0wctj4kbi0h" path="res://scenes/cannon.tscn" id="15_5lh0x"]

@@ -15,12 +15,10 @@ extends Node3D
 var current_wave_index: int = 0  # Tracks the current wave
 
 
-
-
 ## Assumes the path generator has finished, and adds the remaining tiles to fill in the grid.
 func _ready():
 	_complete_grid()
-	start_waves()
+	#start_waves()
 
 	#for i in range(2):
 		#await get_tree().create_timer(2.275).timeout
@@ -34,6 +32,8 @@ func _ready():
 
 # Start the wave spawning process
 func start_waves():
+	# prob should disable startWavesButton here
+	
 	if waves.is_empty():
 		print("No waves defined!")
 		return
@@ -77,8 +77,8 @@ func _complete_grid():
 				add_child(tile)
 				tile.global_position = Vector3(x, 0, y)
 				tile.global_rotation_degrees = Vector3(0, randi_range(0,3)*90, 0)
-	
-	
+
+
 	for i in range(PathGenInstance.get_path_route().size()):
 		var tile_score:int = PathGenInstance.get_tile_score(i)
 		
@@ -116,4 +116,3 @@ func _complete_grid():
 		add_child(tile)
 		tile.global_position = Vector3(PathGenInstance.get_path_tile(i).x, 0, PathGenInstance.get_path_tile(i).y)
 		tile.global_rotation_degrees = tile_rotation
-	

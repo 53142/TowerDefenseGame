@@ -40,7 +40,7 @@ func _physics_process(_delta):
 		else:
 			action_object.visible = false
 			_is_valid_location = false
-	
+
 func set_child_mesh_alphas(n:Node):
 	for c in n.get_children():
 		if c is MeshInstance3D:

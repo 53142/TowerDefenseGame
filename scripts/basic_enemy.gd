@@ -33,11 +33,9 @@ func _on_spawning_state_entered() -> void:
 	await $AnimationPlayer.animation_finished
 	$EnemyStateChart.send_event("to_traveling")
 
-
 func _on_traveling_state_entered() -> void:
 	print("Traveling")
 	attackable = true
-
 
 func _on_traveling_state_processing(delta: float) -> void:
 	distance_traveled += (delta * enemy_settings.speed)
@@ -65,6 +63,12 @@ func _on_damaging_state_entered() -> void:
 func _on_dying_state_entered() -> void:
 	attackable = false
 	enemy_finished.emit()
+	
+	# Add money when enemy dies
+	var money_label = get_node("../Control/MoneyLabel")
+	money_label.add_money(enemy_settings.money_on_death)
+	
+	
 	print("Playing sound")
 	$ExplosionAudio.play()
 	enemy.visible = false
