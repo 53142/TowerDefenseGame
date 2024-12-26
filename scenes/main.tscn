@@ -27,6 +27,8 @@ start_delay = 0.0
 [sub_resource type="Environment" id="Environment_tg6x3"]
 background_mode = 1
 background_color = Color(0.170842, 0.410179, 0.632969, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.769432, 0.769432, 0.769432, 1)
 adjustment_enabled = true
 adjustment_contrast = 1.25
 
@@ -46,9 +48,6 @@ waves = Array[ExtResource("11_ed0vu")]([SubResource("Resource_rsj3x")])
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.34202, 0.939693, 0, -0.939693, 0.34202, 7.701, 8.575, 7.311)
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.94033, 2.84199, 0)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_tg6x3")
