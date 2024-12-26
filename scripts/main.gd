@@ -20,17 +20,10 @@ func _ready():
 	_complete_grid()
 	#start_waves()
 
-	#for i in range(2):
-		#await get_tree().create_timer(2.275).timeout
-		#print("Instantiating enemy")
-		#var enemy:Node3D = enemies[0].instantiate() # Temporary
-		#add_child(enemy)
-		#enemy.add_to_group("enemies")
-
-
 # begin waves
 
 # Start the wave spawning process
+# Called when StartWavesButton is pressed
 func start_waves():
 	# prob should disable startWavesButton here
 	

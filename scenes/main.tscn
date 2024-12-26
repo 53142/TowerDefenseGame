@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://bwh3odk8syxdv"]
+[gd_scene load_steps=21 format=3 uid="uid://bwh3odk8syxdv"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_gv4no"]
 [ext_resource type="PackedScene" uid="uid://bmxtidh4pjun1" path="res://scenes/tile_end.tscn" id="3_bttya"]
@@ -10,11 +10,12 @@
 [ext_resource type="PackedScene" uid="uid://wo38ehsurixc" path="res://scenes/tile_tree.tscn" id="10_wd3ap"]
 [ext_resource type="Script" path="res://scripts/wave.gd" id="11_ed0vu"]
 [ext_resource type="PackedScene" uid="uid://1qkcr8gqbh0p" path="res://scenes/tile_empty.tscn" id="11_p88sk"]
-[ext_resource type="PackedScene" uid="uid://c6632xlskqav1" path="res://scenes/basic_enemy.tscn" id="12_hupvx"]
+[ext_resource type="PackedScene" uid="uid://c6632xlskqav1" path="res://scenes/enemies/basic_enemy.tscn" id="12_hupvx"]
 [ext_resource type="Script" path="res://scripts/money_label.gd" id="12_jrsxf"]
 [ext_resource type="PackedScene" uid="uid://c5wrhg7ydyetq" path="res://scenes/activity_button.tscn" id="13_kdlre"]
 [ext_resource type="Texture2D" uid="uid://bhd1ajyvobk4f" path="res://icon.svg" id="14_erw3p"]
 [ext_resource type="PackedScene" uid="uid://cw0wctj4kbi0h" path="res://scenes/cannon.tscn" id="15_5lh0x"]
+[ext_resource type="Script" path="res://scripts/lives_label.gd" id="16_be5xe"]
 
 [sub_resource type="Resource" id="Resource_rsj3x"]
 script = ExtResource("11_ed0vu")
@@ -105,5 +106,18 @@ offset_right = 213.0
 offset_bottom = 100.0
 theme_override_font_sizes/font_size = 30
 text = "Start Waves"
+
+[node name="LivesLabel" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -163.0
+offset_bottom = 49.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 35
+text = "Lives: 100"
+horizontal_alignment = 1
+script = ExtResource("16_be5xe")
 
 [connection signal="pressed" from="Control/StartWavesButton" to="." method="start_waves"]

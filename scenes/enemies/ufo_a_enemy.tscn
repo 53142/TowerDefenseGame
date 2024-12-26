@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c35ymnmv1ymop"]
+
+[ext_resource type="Script" path="res://scripts/enemies/ufo_a_enemy.gd" id="1_eq274"]
+
+[node name="UfoAEnemy" type="Node3D"]
+script = ExtResource("1_eq274")

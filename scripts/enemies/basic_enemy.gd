@@ -20,7 +20,6 @@ func _ready() -> void:
 	# Add enemy scene
 	enemy = enemy_settings.enemy_scene.instantiate()
 	$Path3D/PathFollow3D.add_child(enemy)
-	print_tree_pretty()
 	
 	enemy_health = enemy_settings.health
 	$Path3D.curve = path_route_to_curve_3d()
@@ -45,11 +44,11 @@ func _on_traveling_state_processing(delta: float) -> void:
 	if distance_traveled > PathGenInstance.get_path_route().size()-1:
 		$EnemyStateChart.send_event("to_damaging")
 
-
 func _on_despawning_state_entered() -> void:
 	enemy_finished.emit()
 	$AnimationPlayer.play("despawn")
 	await $AnimationPlayer.animation_finished
+	
 	$EnemyStateChart.send_event("to_remove_enemy")
 
 func _on_remove_enemy_state_entered() -> void:
@@ -58,6 +57,10 @@ func _on_remove_enemy_state_entered() -> void:
 func _on_damaging_state_entered() -> void:
 	attackable = false
 	print("doing some damage!")
+	
+	var lives_label = get_node("../Control/LivesLabel")
+	lives_label.decrement_lives()
+	
 	$EnemyStateChart.send_event("to_despawning")
 
 func _on_dying_state_entered() -> void:

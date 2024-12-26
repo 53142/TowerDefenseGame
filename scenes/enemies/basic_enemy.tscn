@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=3 uid="uid://c6632xlskqav1"]
 
-[ext_resource type="Script" path="res://scripts/basic_enemy.gd" id="1_y81hh"]
+[ext_resource type="Script" path="res://scripts/enemies/basic_enemy.gd" id="1_y81hh"]
 [ext_resource type="Resource" uid="uid://bfg0wxgmaq3jp" path="res://resources/enemy_settings.res" id="2_cfiso"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="2_svinf"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="4_dy2pn"]
