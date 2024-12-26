@@ -1,5 +1,5 @@
 extends Node3D
-class_name main
+class_name main_class
 
 @export var tile_start:PackedScene
 @export var tile_end:PackedScene
