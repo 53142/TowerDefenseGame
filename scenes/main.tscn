@@ -20,8 +20,8 @@
 [sub_resource type="Resource" id="Resource_rsj3x"]
 script = ExtResource("11_ed0vu")
 enemies = Array[PackedScene]([ExtResource("12_hupvx")])
-spawn_count = 5
-spawn_interval = 1.5
+spawn_count = 50
+spawn_interval = 0.1
 start_delay = 0.0
 
 [sub_resource type="Environment" id="Environment_tg6x3"]
@@ -44,7 +44,7 @@ tile_end = ExtResource("3_bttya")
 tile_straight = ExtResource("4_h6rqd")
 tile_corner = ExtResource("5_g5d30")
 tile_crossroads = ExtResource("6_ctsuf")
-tile_empty = Array[PackedScene]([ExtResource("9_mbmab"), ExtResource("10_wd3ap"), ExtResource("8_bbqjv"), ExtResource("11_p88sk"), ExtResource("11_p88sk"), ExtResource("11_p88sk"), ExtResource("11_p88sk")])
+tile_empty = Array[PackedScene]([ExtResource("9_mbmab"), ExtResource("10_wd3ap"), ExtResource("8_bbqjv"), ExtResource("11_p88sk"), ExtResource("11_p88sk"), ExtResource("11_p88sk"), ExtResource("11_p88sk"), ExtResource("11_p88sk")])
 waves = Array[ExtResource("11_ed0vu")]([SubResource("Resource_rsj3x")])
 
 [node name="Camera3D" type="Camera3D" parent="."]

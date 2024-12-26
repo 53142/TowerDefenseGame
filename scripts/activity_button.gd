@@ -90,8 +90,8 @@ func _on_main_mouse_hit(tile:CollisionObject3D):
 		action_object.global_position = Vector3(tile.global_position.x, 0.2, tile.global_position.z)
 		_is_valid_location = false
 		return
-	print("tile:",tile.get_groups())
-	print("tile:",tile.get_groups()[0])
+	#print("tile:",tile.get_groups())
+	#print("tile:",tile.get_groups()[0])
 	if tile.get_groups()[0].begins_with("grid_empty"):
 		set_child_mesh_alphas(action_object)
 		action_object.global_position = Vector3(tile.global_position.x, 0.2, tile.global_position.z)
