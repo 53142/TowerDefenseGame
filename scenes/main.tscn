@@ -120,4 +120,22 @@ text = "Lives: 100"
 horizontal_alignment = 1
 script = ExtResource("16_be5xe")
 
+[node name="UnpauseButton" type="Button" parent="Control"]
+process_mode = 2
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -38.5
+offset_top = -15.5
+offset_right = 38.5
+offset_bottom = 15.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Unpause"
+
 [connection signal="pressed" from="Control/StartWavesButton" to="." method="start_waves"]
+[connection signal="pressed" from="Control/UnpauseButton" to="." method="_on_unpause_button_pressed"]
