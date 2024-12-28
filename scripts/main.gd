@@ -27,6 +27,7 @@ func _ready():
 # Called when StartWavesButton is pressed
 func start_waves():
 	# prob should disable startWavesButton here
+	$Control/StartWavesButton.set_disabled(true)
 	
 	if waves.is_empty():
 		print("No waves defined!")
@@ -37,6 +38,7 @@ func start_waves():
 func _start_next_wave():
 	if current_wave_index >= waves.size():
 		print("All waves complete!")
+		#call_deferred("game_over")
 		return
 
 	var wave = waves[current_wave_index]
@@ -115,6 +117,9 @@ func game_over() -> void:
 	$Control/UnpauseButton.show()
 	get_tree().paused = true
 
+func win() -> void:
+	$Control/UnpauseButton.show()
+	get_tree().paused = true
 
 func _on_unpause_button_pressed() -> void:
 	$Control/UnpauseButton.hide()

@@ -13,7 +13,7 @@ radius = 3.0
 
 [node name="Cannon" type="Node3D"]
 script = ExtResource("1_5jhhh")
-fire_rate_ms = 200
+fire_rate_ms = 400
 projectile_type = ExtResource("2_0xx46")
 
 [node name="Cannon" type="Node3D" parent="."]
