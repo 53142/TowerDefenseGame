@@ -46,6 +46,7 @@ tile_corner = ExtResource("5_g5d30")
 tile_crossroads = ExtResource("6_ctsuf")
 tile_empty = Array[PackedScene]([ExtResource("9_mbmab"), ExtResource("10_wd3ap"), ExtResource("8_bbqjv"), ExtResource("11_p88sk"), ExtResource("11_p88sk"), ExtResource("11_p88sk"), ExtResource("11_p88sk"), ExtResource("11_p88sk")])
 waves = Array[ExtResource("11_ed0vu")]([SubResource("Resource_rsj3x")])
+money = 60
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.34202, 0.939693, 0, -0.939693, 0.34202, 7.701, 8.575, 7.311)
@@ -91,6 +92,7 @@ grow_horizontal = 2
 grow_vertical = 0
 button_icon = ExtResource("14_erw3p")
 button_object = ExtResource("15_5lh0x")
+price = 20
 
 [node name="StartWavesButton" type="Button" parent="Control"]
 custom_minimum_size = Vector2(50, 30)

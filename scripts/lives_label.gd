@@ -5,7 +5,6 @@ class_name LivesLabel
 
 
 func _ready() -> void:
-	
 	text = "Lives: " + str(main_class.lives) # Display starting number of lives
 
 func decrement_lives() -> void:

@@ -2,6 +2,7 @@ extends Button
 
 @export var button_icon:Texture2D
 @export var button_object:PackedScene
+@export var price:int
 
 var cam:Camera3D
 var action_object:Node
@@ -15,6 +16,8 @@ var _last_valid_location:Vector3
 var _drag_alpha:float = 0.5
 
 @onready var error_mat:BaseMaterial3D = preload("res://materials/red_transparent.material")
+
+@onready var main_class = $"../.."
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -103,15 +106,21 @@ func _on_main_mouse_hit(tile:CollisionObject3D):
 		_is_valid_location = false
 
 func _on_button_down():
-	_is_dragging = true
+	if can_afford():
+		_is_dragging = true
 	_is_valid_location = false
 
 func _on_button_up():
 	_is_dragging = false
 	action_object.visible = false
 	
+	#if _is_valid_location && can_afford(): # Technically can_afford shouldn't have to be called
 	if _is_valid_location:
 		var new_object:Node3D = button_object.instantiate()
 		get_viewport().add_child(new_object)
 		new_object.global_position = _last_valid_location
+		$"../MoneyLabel".subtract_money(price)
 #		set_child_mesh_alphas(action_object, 1)
+
+func can_afford():
+	return main_class.money >= price

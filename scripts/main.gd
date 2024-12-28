@@ -13,6 +13,7 @@ class_name main_class
 @export var enemy_spawn_position: Vector3 = Vector3(0, 0, 0)  # Default spawn position
 @export var enemy_target_position: Vector3 = Vector3(10, 0, 10)  # Path target for enemies
 @export var lives: int = 10
+@export var money: int = 100
 
 var current_wave_index: int = 0  # Tracks the current wave
 
@@ -20,8 +21,6 @@ var current_wave_index: int = 0  # Tracks the current wave
 ## Assumes the path generator has finished, and adds the remaining tiles to fill in the grid.
 func _ready():
 	_complete_grid()
-	#start_waves()
-
 # begin waves
 
 # Start the wave spawning process
