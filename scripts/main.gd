@@ -114,7 +114,8 @@ func _complete_grid():
 		tile.global_rotation_degrees = tile_rotation
 
 func game_over() -> void:
-	$Control/UnpauseButton.show()
+	#$Control/UnpauseButton.show()
+	$Control/GameOverLabel.show()
 	get_tree().paused = true
 
 func win() -> void:
