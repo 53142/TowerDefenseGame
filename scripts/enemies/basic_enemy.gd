@@ -15,6 +15,7 @@ var path_3d:Path3D
 var path_follow_3d:PathFollow3D
 var enemy
 
+
 @onready var health_bar = $Path3D/PathFollow3D/Area3D/SubViewport/ProgressBar
 
 # Called when the node enters the scene tree for the first time.
@@ -22,6 +23,7 @@ func _ready() -> void:
 	# Add enemy scene
 	enemy = enemy_settings.enemy_scene.instantiate()
 	$Path3D/PathFollow3D.add_child(enemy)
+	#enemy.visible = false
 	
 	enemy_health = enemy_settings.health
 	$Path3D.curve = path_route_to_curve_3d()

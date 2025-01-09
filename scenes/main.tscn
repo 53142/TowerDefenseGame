@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://bwh3odk8syxdv"]
+[gd_scene load_steps=25 format=3 uid="uid://bwh3odk8syxdv"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_gv4no"]
 [ext_resource type="PackedScene" uid="uid://bmxtidh4pjun1" path="res://scenes/tile_end.tscn" id="3_bttya"]
@@ -16,6 +16,8 @@
 [ext_resource type="Texture2D" uid="uid://dxxtjk4jospl4" path="res://assets/Textures/cannon.png" id="14_x5odi"]
 [ext_resource type="PackedScene" uid="uid://cw0wctj4kbi0h" path="res://scenes/cannon.tscn" id="15_5lh0x"]
 [ext_resource type="Script" path="res://scripts/lives_label.gd" id="16_be5xe"]
+[ext_resource type="PackedScene" uid="uid://bii24o16qysnq" path="res://scenes/catapult.tscn" id="16_g2im7"]
+[ext_resource type="Texture2D" uid="uid://bldpyyvud12ew" path="res://assets/Textures/catapult.png" id="16_jlpoc"]
 
 [sub_resource type="Resource" id="Resource_rsj3x"]
 script = ExtResource("11_ed0vu")
@@ -100,13 +102,32 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -8.0
-offset_top = -81.0
-offset_bottom = -65.0
+offset_left = -129.0
+offset_top = -16.0
+offset_right = -73.0
+offset_bottom = 0.0
 grow_horizontal = 2
 grow_vertical = 0
 button_icon = ExtResource("14_x5odi")
 button_object = ExtResource("15_5lh0x")
+price = 30
+
+[node name="ActivityButton2" parent="Control" instance=ExtResource("13_kdlre")]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 73.0
+offset_top = -16.0
+offset_right = 129.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 0
+button_icon = ExtResource("16_jlpoc")
+button_object = ExtResource("16_g2im7")
 price = 30
 
 [node name="StartWavesButton" type="Button" parent="Control"]
